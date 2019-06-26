@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace ReallySimpleJWT;
 
 use ReallySimpleJWT\Interfaces\EncodeInterface;
@@ -23,12 +21,12 @@ class Encode implements EncodeInterface
      * slightly different from the actual algorithm used to hash the
      * signature string.
      */
-    private const ALGORITHM = 'HS256';
+    const ALGORITHM = 'HS256';
 
     /**
      * This is the actual algorithm used to hash the token's signature string.
      */
-    private const HASH_ALGORITHM = 'sha256';
+    const HASH_ALGORITHM = 'sha256';
 
     /**
      * Get the algorithm used to encode the signature. Note this is for show,
@@ -36,7 +34,7 @@ class Encode implements EncodeInterface
      *
      * @return string
      */
-    public function getAlgorithm(): string
+    public function getAlgorithm()
     {
         return self::ALGORITHM;
     }
@@ -47,7 +45,7 @@ class Encode implements EncodeInterface
      *
      * @return string
      */
-    private function getHashAlgorithm(): string
+    private function getHashAlgorithm()
     {
         return self::HASH_ALGORITHM;
     }
@@ -58,7 +56,7 @@ class Encode implements EncodeInterface
      * @param string $toEncode
      * @return string
      */
-    public function encode(string $toEncode): string
+    public function encode($toEncode)
     {
         return $this->toBase64Url(base64_encode($toEncode));
     }
@@ -69,7 +67,7 @@ class Encode implements EncodeInterface
      * @param string $toDecode
      * @return string
      */
-    public function decode(string $toDecode): string
+    public function decode($toDecode)
     {
         return (string) base64_decode(
             $this->addPadding($this->toBase64($toDecode)),
@@ -87,7 +85,7 @@ class Encode implements EncodeInterface
      * @param string $secret
      * @return string
      */
-    public function signature(string $header, string $payload, string $secret): string
+    public function signature($header, $payload, $secret)
     {
         return $this->encode(
             $this->hash(
@@ -106,7 +104,7 @@ class Encode implements EncodeInterface
      * @param string $secret
      * @return string
      */
-    private function hash(string $algorithm, string $toHash, string $secret): string
+    private function hash($algorithm, $toHash, $secret)
     {
         return hash_hmac($algorithm, $toHash, $secret, true);
     }
@@ -117,7 +115,7 @@ class Encode implements EncodeInterface
      * @param string $base64
      * @return string
      */
-    private function toBase64Url(string $base64): string
+    private function toBase64Url($base64)
     {
         return str_replace(['+', '/', '='], ['-', '_', ''], $base64);
     }
@@ -128,7 +126,7 @@ class Encode implements EncodeInterface
      * @param string $urlString
      * @return string
      */
-    private function toBase64(string $urlString): string
+    private function toBase64($urlString)
     {
         return str_replace(['-', '_'], ['+', '/'], $urlString);
     }
@@ -141,7 +139,7 @@ class Encode implements EncodeInterface
      * @param string $base64String
      * @return string
      */
-    private function addPadding(string $base64String): string
+    private function addPadding($base64String)
     {
         if (strlen($base64String) % 4 !== 0) {
             return $this->addPadding($base64String . '=');

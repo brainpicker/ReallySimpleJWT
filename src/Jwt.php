@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace ReallySimpleJWT;
 
 /**
@@ -32,7 +30,7 @@ class Jwt
      * @param string $token
      * @param string $secret
      */
-    public function __construct(string $token, string $secret)
+    public function __construct($token, $secret)
     {
         $this->token = $token;
 
@@ -44,7 +42,7 @@ class Jwt
      *
      * @return string
      */
-    public function getToken(): string
+    public function getToken()
     {
         return $this->token;
     }
@@ -54,7 +52,7 @@ class Jwt
      *
      * @return string
      */
-    public function getSecret(): string
+    public function getSecret()
     {
         return $this->secret;
     }

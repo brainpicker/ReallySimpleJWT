@@ -15,20 +15,20 @@ interface EncodeInterface
      * Get the algorithm used to encode the signature string. This will also
      * act as the alg claim in the token header.
      */
-    public function getAlgorithm(): string;
+    public function getAlgorithm();
 
     /**
      * Encode a JSON string so it is base64 URL compliant.
      */
-    public function encode(string $toEncode): string;
+    public function encode($toEncode);
 
     /**
      * Decode a base64 URL string to a JSON string.
      */
-    public function decode(string $toDecode): string;
+    public function decode($toDecode);
 
     /**
      * Create the JSON Web Token signature string.
      */
-    public function signature(string $header, string $payload, string $secret): string;
+    public function signature($header, $payload, $secret);
 }

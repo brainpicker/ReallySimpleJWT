@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace ReallySimpleJWT;
 
 /**
@@ -31,7 +29,7 @@ class Validate
      * @param string $jwt
      * @return bool
      */
-    public function structure(string $jwt): bool
+    public function structure($jwt)
     {
         return preg_match(
             '/^[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+\.[a-zA-Z0-9\-\_\=]+$/',
@@ -47,7 +45,7 @@ class Validate
      * @param int $expiration
      * @return bool
      */
-    public function expiration(int $expiration): bool
+    public function expiration($expiration)
     {
         return $expiration > time();
     }
@@ -60,17 +58,17 @@ class Validate
      * @param int $notBefore
      * @return bool
      */
-    public function notBefore(int $notBefore): bool
+    public function notBefore($notBefore)
     {
         return $notBefore < time();
     }
 
     /**
      * Check two signature hashes match. One signature is supplied by the token.
-     * The other is newly gernated from the token's header and payload. They
+     * The other is newly generated from the token's header and payload. They
      * should match if they don't someone has likely tampered with the token.
      */
-    public function signature(string $signature, string $comparison): bool
+    public function signature($signature, $comparison)
     {
         return hash_equals($signature, $comparison);
     }
@@ -85,7 +83,7 @@ class Validate
      * @param string $secret
      * @return bool
      */
-    public function secret(string $secret): bool
+    public function secret($secret)
     {
         if (!preg_match(
             '/^.*(?=.{12,}+)(?=.*[0-9]+)(?=.*[A-Z]+)(?=.*[a-z]+)(?=.*[\*&!@%\^#\$]+).*$/',

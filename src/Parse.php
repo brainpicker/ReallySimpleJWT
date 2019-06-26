@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace ReallySimpleJWT;
 
 use ReallySimpleJWT\Jwt;
@@ -69,7 +67,7 @@ class Parse
      *
      * @return Parse
      */
-    public function validate(): self
+    public function validate()
     {
         if (!$this->validate->structure($this->jwt->getToken())) {
             throw new ValidateException('Token is invalid.', 1);
@@ -86,7 +84,7 @@ class Parse
      *
      * @return Parse
      */
-    public function validateExpiration(): self
+    public function validateExpiration()
     {
         if (!$this->validate->expiration($this->getExpiration())) {
             throw new ValidateException('Expiration claim has expired.', 4);
@@ -101,7 +99,7 @@ class Parse
      *
      * @return Parse
      */
-    public function validateNotBefore(): self
+    public function validateNotBefore()
     {
         if (!$this->validate->notBefore($this->getNotBefore())) {
             throw new ValidateException('Not Before claim has not elapsed.', 5);
@@ -116,7 +114,7 @@ class Parse
      *
      * @return Parsed
      */
-    public function parse(): Parsed
+    public function parse()
     {
         return new Parsed(
             $this->jwt,
@@ -132,7 +130,7 @@ class Parse
      *
      * @throws Exception\ValidateException
      */
-    private function validateSignature(): void
+    private function validateSignature()
     {
         $signature = $this->encode->signature(
             $this->encode->decode($this->getHeader()),
@@ -151,7 +149,7 @@ class Parse
      *
      * @return array
      */
-    private function splitToken(): array
+    private function splitToken()
     {
         return explode('.', $this->jwt->getToken());
     }
@@ -162,9 +160,9 @@ class Parse
      *
      * @return string
      */
-    private function getHeader(): string
+    private function getHeader()
     {
-        return $this->splitToken()[0] ?? '';
+        return !empty($this->splitToken()[0]) ? $this->splitToken()[0] : '';
     }
 
     /**
@@ -173,9 +171,9 @@ class Parse
      *
      * @return string
      */
-    private function getPayload(): string
+    private function getPayload()
     {
-        return $this->splitToken()[1] ?? '';
+        return !empty($this->splitToken()[1]) ? $this->splitToken()[1] : '';
     }
 
     /**
@@ -184,9 +182,9 @@ class Parse
      *
      * @return string
      */
-    private function getSignature(): string
+    private function getSignature()
     {
-        return $this->splitToken()[2] ?? '';
+        return !empty($this->splitToken()[2]) ? $this->splitToken()[2] : '';
     }
 
     /**
@@ -195,7 +193,7 @@ class Parse
      *
      * @return int
      */
-    private function getExpiration(): int
+    private function getExpiration()
     {
         if (isset($this->decodePayload()['exp'])) {
             return $this->decodePayload()['exp'];
@@ -210,7 +208,7 @@ class Parse
      *
      * @return int
      */
-    private function getNotBefore(): int
+    private function getNotBefore()
     {
         if (isset($this->decodePayload()['nbf'])) {
             return $this->decodePayload()['nbf'];
@@ -225,7 +223,7 @@ class Parse
      *
      * @return array
      */
-    private function decodeHeader(): array
+    private function decodeHeader()
     {
         return $this->jsonDecode($this->encode->decode(
             $this->getHeader()
@@ -238,7 +236,7 @@ class Parse
      *
      * @return array
      */
-    private function decodePayload(): array
+    private function decodePayload()
     {
         return $this->jsonDecode($this->encode->decode(
             $this->getPayload()

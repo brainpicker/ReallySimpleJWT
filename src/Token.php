@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace ReallySimpleJWT;
 
 use ReallySimpleJWT\Build;
@@ -35,7 +33,7 @@ class Token
      *
      * @return string
      */
-    public static function create($userId, string $secret, int $expiration, string $issuer): string
+    public static function create($userId, $secret, $expiration, $issuer)
     {
         $builder = self::builder();
 
@@ -56,7 +54,7 @@ class Token
      *
      * @return string
      */
-    public static function customPayload(array $payload, string $secret): string
+    public static function customPayload(array $payload, $secret)
     {
         $builder = self::builder();
 
@@ -82,7 +80,7 @@ class Token
      *
      * @return bool
      */
-    public static function validate(string $token, string $secret): bool
+    public static function validate($token, $secret)
     {
         $parse = self::parser($token, $secret);
 
@@ -105,7 +103,7 @@ class Token
      *
      * @return array
      */
-    public static function getHeader(string $token, string $secret): array
+    public static function getHeader($token, $secret)
     {
         $parser = self::parser($token, $secret);
 
@@ -120,7 +118,7 @@ class Token
      *
      * @return array
      */
-    public static function getPayload(string $token, string $secret): array
+    public static function getPayload($token, $secret)
     {
         $parser = self::parser($token, $secret);
 
@@ -132,7 +130,7 @@ class Token
      *
      * @return Build
      */
-    public static function builder(): Build
+    public static function builder()
     {
         return new Build('JWT', new Validate(), new Encode());
     }
@@ -142,7 +140,7 @@ class Token
      *
      * @return Parse
      */
-    public static function parser(string $token, string $secret): Parse
+    public static function parser($token, $secret)
     {
         $jwt = new Jwt($token, $secret);
 
@@ -156,7 +154,7 @@ class Token
      * @param Parse $parse
      * @return bool
      */
-    private static function validateWithExpiration(Parse $parse): bool
+    private static function validateWithExpiration(Parse $parse)
     {
         try {
             $parse->validate()
@@ -177,7 +175,7 @@ class Token
      * @param Parse $parse
      * @return bool
      */
-    private static function validateNotBefore(Parse $parse): bool
+    private static function validateNotBefore(Parse $parse)
     {
         try {
             $parse->validateNotBefore();

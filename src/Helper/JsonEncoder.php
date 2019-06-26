@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace ReallySimpleJWT\Helper;
 
 /**
@@ -18,7 +16,7 @@ trait JsonEncoder
      * @param array $jsonArray
      * @return string
      */
-    public function jsonEncode(array $jsonArray): string
+    public function jsonEncode($jsonArray)
     {
         return (string) json_encode($jsonArray);
     }
@@ -30,7 +28,7 @@ trait JsonEncoder
      * @param string $json
      * @return array
      */
-    public function jsonDecode(string $json): array
+    public function jsonDecode($json)
     {
         return (array) json_decode($json, true);
     }

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace ReallySimpleJWT;
 
 use ReallySimpleJWT\Jwt;
@@ -52,7 +50,7 @@ class Parsed
      * @param array $payload
      * @param string $signature
      */
-    public function __construct(Jwt $jwt, array $header, array $payload, string $signature)
+    public function __construct(Jwt $jwt, array $header, array $payload, $signature)
     {
         $this->jwt = $jwt;
 
@@ -68,7 +66,7 @@ class Parsed
      *
      * @return Jwt
      */
-    public function getJwt(): Jwt
+    public function getJwt()
     {
         return $this->jwt;
     }
@@ -78,7 +76,7 @@ class Parsed
      *
      * @return array
      */
-    public function getHeader(): array
+    public function getHeader()
     {
         return $this->header;
     }
@@ -89,9 +87,9 @@ class Parsed
      *
      * @return string
      */
-    public function getAlgorithm(): string
+    public function getAlgorithm()
     {
-        return $this->header['alg'] ?? '';
+        return !empty($this->header['alg']) ? $this->header['alg'] : '';
     }
 
     /**
@@ -100,9 +98,9 @@ class Parsed
      *
      * @return string
      */
-    public function getType(): string
+    public function getType()
     {
-        return $this->header['typ'] ?? '';
+        return !empty($this->header['typ']) ? $this->header['typ'] : '';
     }
 
     /**
@@ -111,9 +109,9 @@ class Parsed
      *
      * @return string
      */
-    public function getContentType(): string
+    public function getContentType()
     {
-        return $this->header['cty'] ?? '';
+        return !empty($this->header['cty']) ? $this->header['cty'] : '';
     }
 
     /**
@@ -121,7 +119,7 @@ class Parsed
      *
      * @return array
      */
-    public function getPayload(): array
+    public function getPayload()
     {
         return $this->payload;
     }
@@ -132,9 +130,9 @@ class Parsed
      *
      * @return string
      */
-    public function getIssuer(): string
+    public function getIssuer()
     {
-        return $this->payload['iss'] ?? '';
+        return !empty($this->header['iss']) ? $this->header['iss'] : '';
     }
 
     /**
@@ -143,9 +141,9 @@ class Parsed
      *
      * @return string
      */
-    public function getSubject(): string
+    public function getSubject()
     {
-        return $this->payload['sub'] ?? '';
+        return !empty($this->header['sub']) ? $this->header['sub'] : '';
     }
 
     /**
@@ -156,7 +154,7 @@ class Parsed
      */
     public function getAudience()
     {
-        return $this->payload['aud'] ?? '';
+        return !empty($this->header['aud']) ? $this->header['aud'] : '';
     }
 
     /**
@@ -165,9 +163,9 @@ class Parsed
      *
      * @return int
      */
-    public function getExpiration(): int
+    public function getExpiration()
     {
-        return $this->payload['exp'] ?? 0;
+        return !empty($this->header['exp']) ? $this->header['exp'] : '';
     }
 
     /**
@@ -176,9 +174,9 @@ class Parsed
      *
      * @return int
      */
-    public function getNotBefore(): int
+    public function getNotBefore()
     {
-        return $this->payload['nbf'] ?? 0;
+        return !empty($this->header['nbf']) ? $this->header['nbf'] : '';
     }
 
     /**
@@ -187,9 +185,9 @@ class Parsed
      *
      * @return int
      */
-    public function getIssuedAt(): int
+    public function getIssuedAt()
     {
-        return $this->payload['iat'] ?? 0;
+        return !empty($this->header['iat']) ? $this->header['iat'] : '';
     }
 
     /**
@@ -198,9 +196,9 @@ class Parsed
      *
      * @return string
      */
-    public function getJwtId(): string
+    public function getJwtId()
     {
-        return $this->payload['jti'] ?? '';
+        return !empty($this->header['jti']) ? $this->header['jti'] : '';
     }
 
     /**
@@ -208,7 +206,7 @@ class Parsed
      *
      * @return string
      */
-    public function getSignature(): string
+    public function getSignature()
     {
         return $this->signature;
     }

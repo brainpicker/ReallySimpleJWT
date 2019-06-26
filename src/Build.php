@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace ReallySimpleJWT;
 
 use ReallySimpleJWT\Validate;
@@ -77,7 +75,7 @@ class Build
      * @param Validate $validate
      * @param Interfaces\EncodeInterface $encode
      */
-    public function __construct(string $type, Validate $validate, EncodeInterface $encode)
+    public function __construct($type, Validate $validate, EncodeInterface $encode)
     {
         $this->type = $type;
 
@@ -94,7 +92,7 @@ class Build
      * @param string $contentType
      * @return Build
      */
-    public function setContentType(string $contentType): self
+    public function setContentType($contentType)
     {
         $this->header['cty'] = $contentType;
 
@@ -108,7 +106,7 @@ class Build
      * @param mixed $value
      * @return Build
      */
-    public function setHeaderClaim(string $key, $value): self
+    public function setHeaderClaim($key, $value)
     {
         $this->header[$key] = $value;
 
@@ -122,7 +120,7 @@ class Build
      *
      * @return array
      */
-    public function getHeader(): array
+    public function getHeader()
     {
         return array_merge(
             $this->header,
@@ -139,7 +137,7 @@ class Build
      * @return Build
      * @throws Exception\ValidateException
      */
-    public function setSecret(string $secret): self
+    public function setSecret($secret)
     {
         if (!$this->validate->secret($secret)) {
             throw new ValidateException('Invalid secret.', 9);
@@ -157,7 +155,7 @@ class Build
      * @param string $issuer
      * @return Build
      */
-    public function setIssuer(string $issuer): self
+    public function setIssuer($issuer)
     {
         $this->payload['iss'] = $issuer;
 
@@ -171,7 +169,7 @@ class Build
      * @param string $subject
      * @return Build
      */
-    public function setSubject(string $subject): self
+    public function setSubject($subject)
     {
         $this->payload['sub'] = $subject;
 
@@ -188,7 +186,7 @@ class Build
      * @return Build
      * @throws Exception\ValidateException
      */
-    public function setAudience($audience): self
+    public function setAudience($audience)
     {
         if (is_string($audience) || is_array($audience)) {
             $this->payload['aud'] = $audience;
@@ -207,7 +205,7 @@ class Build
      * @return Build
      * @throws Exception\ValidateException
      */
-    public function setExpiration(int $timestamp): self
+    public function setExpiration($timestamp)
     {
         if (!$this->validate->expiration($timestamp)) {
             throw new ValidateException('Expiration claim has expired.', 4);
@@ -225,7 +223,7 @@ class Build
      * @param int $notBefore
      * @return Build
      */
-    public function setNotBefore(int $notBefore): self
+    public function setNotBefore($notBefore)
     {
         $this->payload['nbf'] = $notBefore;
 
@@ -239,7 +237,7 @@ class Build
      * @param int $issuedAt
      * @return Build
      */
-    public function setIssuedAt(int $issuedAt): self
+    public function setIssuedAt($issuedAt)
     {
         $this->payload['iat'] = $issuedAt;
 
@@ -253,7 +251,7 @@ class Build
      * @param string $jwtId
      * @return Build
      */
-    public function setJwtId(string $jwtId): self
+    public function setJwtId($jwtId)
     {
         $this->payload['jti'] = $jwtId;
 
@@ -269,7 +267,7 @@ class Build
      * @param mixed $value
      * @return Build
      */
-    public function setPayloadClaim(string $key, $value): self
+    public function setPayloadClaim($key, $value)
     {
         $this->payload[$key] = $value;
 
@@ -282,7 +280,7 @@ class Build
      *
      * @return array
      */
-    public function getPayload(): array
+    public function getPayload()
     {
         return $this->payload;
     }
@@ -298,7 +296,7 @@ class Build
      *
      * @return Jwt
      */
-    public function build(): Jwt
+    public function build()
     {
         return new Jwt(
             $this->encode->encode($this->jsonEncode($this->getHeader())) . "." .
@@ -315,7 +313,7 @@ class Build
      *
      *  @return Build
      */
-    public function reset(): self
+    public function reset()
     {
         $this->payload = [];
         $this->header = [];
@@ -331,7 +329,7 @@ class Build
      * @return string
      * @throws Exception\ValidateException
      */
-    private function getSignature(): string
+    private function getSignature()
     {
         if (!empty($this->secret)) {
             return $this->encode->signature(
